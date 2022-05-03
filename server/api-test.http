@@ -1,0 +1,17 @@
+POST http://localhost:1337/apiLogin
+Content-Type: application/json
+
+{
+  "user": "asd",
+  "pass": "asdasd123"
+}
+
+###
+
+POST http://localhost:1337/apiRegister
+Content-Type: application/json
+
+{
+  "user": "asd",
+  "pass": "asdasd123"
+}

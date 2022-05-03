@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>N</title>
+  <script>
+    if (localStorage['token']) {
+      location = '/chat'
+    }
+  </script>
+
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    main {
+      padding: 5em 0;
+      text-align: center;
+    }
+    form > * {
+      padding: 0.5em 0;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="wrapper">
+      <a href="." id="logo">N</a>
+      <ul class="nav">
+        <li><a href="register">Register</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <h1>Login</h1>
+    <form action="apiLogin" method="post">
+      <p id="error"></p>
+      <p>
+        <label for="user">Username: </label>
+        <input type="text" name="user" id="user" placeholder="Username">
+      </p>
+      <p>
+        <label for="pass">Password: </label>
+        <input type="password" name="pass" id="pass" placeholder="Password">
+      </p>
+      <button type="submit">Login</button>
+      <p>New? <a href="register">Create an account</a></p>
+    </form>
+  </main>
+</body>
+
+<script>
+  document.querySelector('form').onsubmit = async (ev) => {
+    ev.preventDefault()
+    let res = await fetch('apiLogin', {
+      method: 'POST',
+      headers: {'content-type': 'application/json'},
+      body: JSON.stringify({
+        user: document.querySelector('#user').value,
+        pass: document.querySelector('#pass').value
+      })
+    })
+
+    let body = await res.json()
+
+    if (res.status != 200 && body.error) {
+      document.querySelector('#error').textContent = 'Error: ' + body.error
+
+    } else if (body && body.token) {
+      localStorage.setItem('token', body.token)
+      window.location = '/chat'
+
+    }
+  }
+</script>
+</html>

@@ -1,0 +1,19 @@
+html {box-sizing: border-box}
+*,*::before, *::after {box-sizing: inherit}
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  padding-top: 65px;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 5px 8px;
+}

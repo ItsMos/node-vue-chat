@@ -1,0 +1,60 @@
+@import url(style.css);
+
+html, body {height: 100%}
+
+main.wrapper {
+  height: calc(100% - 65px);
+}
+
+#chat {
+  /* background-color: rgba(0,0,0,.05); */
+  /* padding: 10px 18px; */
+  height: 100%;
+  width: 85%;
+  overflow-y: scroll;
+}
+.msg {
+  /* direction: rtl;
+  text-align: left; */
+  padding: 5px 0;
+}
+.msg:nth-child(odd) {
+  background-color: snow;
+}
+.msg > span {
+  color: dimgray;
+  font-size: 0.8em;
+  margin-left: 0.5em;
+  float: right;
+  margin-right: 1em;
+}
+.msg.sending {
+  color: gray;
+}
+#online {
+  background-color: rgb(240, 234, 248);
+  width: 15%;
+  height: 100%;
+  overflow: auto;
+  list-style: none;
+  padding: 5px 0 5px 8px;
+}
+#online > li {
+  padding: 2px 0;
+}
+form {
+  width: 100%;
+  /* flex-grow: 100%; */
+  /* position: fixed;
+  bottom: 5px;
+  width: 100%; */
+}
+form input {
+  padding: 0 10px;
+  width: calc(91% - 5px);
+  height: 65px;
+}
+form button {
+  width: 9%;
+  height: 65px
+}

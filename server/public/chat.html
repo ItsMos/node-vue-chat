@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>N</title>
+
+  <link rel="stylesheet" href="css/chat.css">
+</head>
+<body>
+  <nav>
+    <ul class="wrapper">
+      <a href="." id="logo">N</a>
+      <li><a href="#" onclick="logout()">Logout</a></li>
+    </ul>
+  </nav>
+  <main class="wrapper">
+    <div id="chat">
+      <!-- <p class="msg">
+        <strong>Me</strong></br>
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vel quasi reprehenderit labore eaque doloremque blanditiis libero necessitatibus. Explicabo itaque numquam necessitatibus, eligendi quaerat labore
+      </p> -->
+    </div>
+    <ul id="online">
+      <li><strong>Online:</strong></li>
+    </ul>
+    <form>
+      <input type="text" placeholder="Type a message ..">
+      <button>Send</button>
+    </form>
+  </main>
+</body>
+
+<script src="js/socket.io.min.js"></script>
+<script src="js/jwt-decode.js"></script>
+<script>
+  let token = localStorage['token']
+
+  if (!token) {
+    location = '/'
+  }
+
+  let user = jwt_decode(token).user
+  
+  addToOnlineList(user)
+
+  const socket = io()
+  socket.emit('token', token)
+  socket.on('msg', (msg, user) => {
+    createMsgElement(user, msg)
+  })
+
+  socket.on('disconnect', ()=> {
+    form.childNodes.forEach(node => node.disabled = true)
+    alert('Disconnected')
+  })
+
+  socket.on('userJoined', (user)=> {
+    createNotice(`<strong>${user}</strong> joined`)
+    addToOnlineList(user)
+  })
+
+  socket.on('userLeft', (user)=> {
+    createNotice(`<strong>${user}</strong> left`)
+    removeFromOnlineList(user)
+  })
+
+  socket.on('onlineList', list => {
+    list.forEach(_user => {
+      if (_user != user)
+        addToOnlineList(_user)
+    })
+  })
+
+  function addToOnlineList(user) {
+    let ul = document.querySelector('#online')
+    let li = document.createElement('li')
+    li.textContent = user
+    li.dataset.user = user
+    ul.appendChild(li)
+  }
+
+  function removeFromOnlineList(user) {
+    document.querySelector(`#online>li[data-user=${user}]`).remove()
+  }
+
+  const chat = document.querySelector('#chat')
+  const form = document.forms.item(0)
+
+  form.onsubmit = (ev) => {
+    ev.preventDefault()
+    let msg = form.querySelector('input').value
+    msg = msg.trim()
+    if (msg) {
+      let el = createMsgElement(user, msg)
+      socket.emit('msg', msg)
+      form.querySelector('input').value = ''
+      // setTimeout(markSent, 1000, el)
+    }
+  }
+
+  function scrollDown() {
+    chat.scrollTop = chat.scrollHeight
+  }
+
+  function createMsgElement(from, msg, sending) {
+    let t = new Date()
+    let el = document.createElement('p')
+    el.className = 'msg'
+    if (sending) el.className += ' sending'
+    el.innerHTML = `<strong>${from}</strong>`
+    el.innerHTML += `<span title="${t.toLocaleDateString()}">${t.toLocaleTimeString()}</span>`
+    el.innerHTML += '</br>' + msg
+    chat.appendChild(el)
+    scrollDown()
+    return el
+  }
+
+  function createNotice(str) {
+    let el = document.createElement('p')
+    el.className = 'notice'
+    el.innerHTML = str
+    chat.appendChild(el)
+    scrollDown()
+    return el
+  }
+
+  function receiveMessage(from, msg) {
+    createMsgElement(from, msg)
+  }
+
+  function markSent(el) {
+    el.classList.remove('sending')
+  }
+
+  function logout() {
+    localStorage.removeItem('token')
+    location = '/'
+  }
+</script>
+</html>

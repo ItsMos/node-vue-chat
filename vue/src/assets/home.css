@@ -1,0 +1,85 @@
+html {box-sizing: border-box}
+*,*::after, *::before {box-sizing: inherit}
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 18px;
+  overflow-x: hidden;
+  padding-top: 0
+}
+
+.wrapper {
+  display: flex;
+  max-width: 1000px;
+  margin: 0 auto;
+  flex-wrap: nowrap;
+}
+
+nav {
+  position: fixed;
+  width: 100%;
+}
+
+nav .wrapper {
+  justify-content: space-between;
+}
+
+nav #logo {
+  color: #f8f8f8;
+  font-family: 'Bradley Hand ITC';
+  font-size: 2em;
+  text-decoration: none;
+  user-select: none;
+}
+
+nav #logo img {
+  width: 40px;
+  vertical-align: middle;
+}
+
+.nav {
+  list-style: none;
+  display: flex;
+}
+
+.nav a {
+  color: #f8f8f8;
+  display: block;
+  text-decoration: none;
+  padding: 1em 0.8em;
+}
+
+header {
+  color: #f8f8f8;
+  background-color: rebeccapurple;
+  height: 100%;
+  padding-top: 10em;
+}
+
+header .hero {
+  justify-content: space-around;
+}
+.hero > div {
+  margin-top: 4em;
+  width: 30%;
+}
+.hero img {
+  height: 300px;
+}
+
+header .sponsors {
+  justify-content: center;
+}
+.sponsors img {
+  flex-basis: 25px;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
